@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: ai-review-reply
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/ai_review?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: root
+    password: ${MYSQL_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 5000
+
+# OpenAI
+openai:
+  api-key: ${OPENAI_API_KEY}
+  model: gpt-4o-mini
+  max-tokens: 500
+
+# FCM
+firebase:
+  credentials-path: ${FCM_CREDENTIALS_PATH:firebase-service-account.json}
+
+# JWT
+jwt:
+  secret: ${JWT_SECRET:your-very-long-secret-key-for-jwt-authentication-minimum-256-bits}
+  expiration: 86400000
+
+server:
+  port: 8080
