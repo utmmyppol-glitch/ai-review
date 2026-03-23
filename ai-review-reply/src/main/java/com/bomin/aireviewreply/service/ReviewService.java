@@ -211,13 +211,15 @@ public class ReviewService {
 
         // 답글 상태
         TypedQuery<Long> pendingQuery = em.createQuery(
-                "SELECT COUNT(r) FROM Review r WHERE r.storeId = :storeId AND r.replyStatus IN ('PENDING','ANALYZED','GENERATED')", Long.class);
+                "SELECT COUNT(r) FROM Review r WHERE r.storeId = :storeId AND r.replyStatus IN (:statuses)", Long.class);
         pendingQuery.setParameter("storeId", storeId);
+        pendingQuery.setParameter("statuses", List.of(Review.ReplyStatus.PENDING, Review.ReplyStatus.ANALYZED, Review.ReplyStatus.GENERATED));
         long pending = pendingQuery.getSingleResult();
 
         TypedQuery<Long> sentQuery = em.createQuery(
-                "SELECT COUNT(r) FROM Review r WHERE r.storeId = :storeId AND r.replyStatus = 'SENT'", Long.class);
+                "SELECT COUNT(r) FROM Review r WHERE r.storeId = :storeId AND r.replyStatus = :status", Long.class);
         sentQuery.setParameter("storeId", storeId);
+        sentQuery.setParameter("status", Review.ReplyStatus.SENT);
         long sent = sentQuery.getSingleResult();
 
         // 평균 별점
